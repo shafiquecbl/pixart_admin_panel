@@ -1,17 +1,29 @@
-@props(['status'])
+@props([
+'status' => 'active',
+'size' => 'md'
+])
 
 @php
-$classes = match(strtolower($status)) {
-'active' => 'bg-green-50 text-green-600 border-green-200',
-'inactive' => 'bg-red-50 text-red-600 border-red-200',
-'on hold' => 'bg-indigo-50 text-indigo-600 border-indigo-200',
-'completed' => 'bg-green-50 text-green-600 border-green-200',
-'failed' => 'bg-red-50 text-red-600 border-red-200',
-'voicemail' => 'bg-orange-50 text-orange-600 border-orange-200',
-default => 'bg-gray-50 text-gray-600 border-gray-200'
-};
+$baseClasses = 'inline-flex items-center rounded-full font-medium';
+
+$sizeClasses = [
+'sm' => 'px-2 py-0.5 text-xs',
+'md' => 'px-2.5 py-0.5 text-sm',
+'lg' => 'px-3 py-1 text-base'
+][$size] ?? 'px-2.5 py-0.5 text-sm';
+
+$statusClasses = [
+'active' => 'bg-green-100 text-green-800',
+'inactive' => 'bg-gray-100 text-gray-800',
+'pending' => 'bg-yellow-100 text-yellow-800',
+'error' => 'bg-red-100 text-red-800',
+'warning' => 'bg-orange-100 text-orange-800',
+'info' => 'bg-blue-100 text-blue-800'
+][$status] ?? 'bg-gray-100 text-gray-800';
+
+$classes = $baseClasses . ' ' . $sizeClasses . ' ' . $statusClasses;
 @endphp
 
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border {{ $classes }}">
-    {{ $status }}
+<span {{ $attributes->merge(['class' => $classes]) }}>
+    {{ $slot }}
 </span>
